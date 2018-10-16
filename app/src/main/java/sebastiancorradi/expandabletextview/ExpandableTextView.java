@@ -2,6 +2,8 @@ package sebastiancorradi.expandabletextview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -53,13 +55,32 @@ public class ExpandableTextView extends android.support.v7.widget.AppCompatTextV
     }
 
     public void init(){
-        inited = true;
-        this.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateState();
-            }
-        });
+        if (!inited) {
+            inited = true;
+            this.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateState();
+                }
+            });
+            
+            this.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    setExpandedLines(getLineCount());
+                }
+            });
+        }
     }
     private void updateState(){
         if (collapsed){
